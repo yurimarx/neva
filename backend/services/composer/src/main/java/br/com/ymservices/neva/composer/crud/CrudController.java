@@ -39,8 +39,13 @@ public abstract class CrudController<T extends CrudEntity,Request, Response> {
     }
 
     @PostMapping
-    public String create(@RequestBody Request request) {
-        return service.create(mapper.requestToEntity(request)).getId();
+    public ResponseEntity<Response> create(@RequestBody Request request) {
+        return new ResponseEntity<Response>(
+            mapper.entityToResponse(
+                service.create(mapper.requestToEntity(request))
+            ), 
+            HttpStatus.OK
+        );
     }
 
     @PutMapping("/{id}")
